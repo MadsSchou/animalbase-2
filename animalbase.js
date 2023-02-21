@@ -10,6 +10,7 @@ const Animal = {
   desc: "-unknown animal-",
   type: "",
   age: 0,
+  star: false,
 };
 function start() {
   console.log("ready");
@@ -100,6 +101,30 @@ function displayAnimal(animal) {
   clone.querySelector("[data-field=desc]").textContent = animal.desc;
   clone.querySelector("[data-field=type]").textContent = animal.type;
   clone.querySelector("[data-field=age]").textContent = animal.age;
+
+  // Show star ⭐ or ☆
+  if (Animal.star) {
+    clone.querySelector("[data-field=star]").textContent = "⭐";
+  } else {
+    // clone.querySelector("[data-field=star]").textContent = "☆";
+    clone.querySelector("[data-field=star]").textContent = "⭐";
+    clone.querySelector("td[data-field=star]").style.filter = "grayscale(100%)";
+  }
+
+  // TODO: Add event listeners for star and winner
+
+  clone.querySelector("[data-field=star]").addEventListener("click", starToggle);
+
+  function starToggle() {
+    // console.log("starToggle");
+    if (Animal.star === true) {
+      Animal.star = false;
+    } else {
+      Animal.star = true;
+    }
+    // console.log(animal);
+    displayList(allAnimals);
+  }
 
   // append clone to list
   document.querySelector("#list tbody").appendChild(clone);
