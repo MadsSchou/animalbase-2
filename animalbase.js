@@ -41,8 +41,6 @@ async function loadJSON() {
 function prepareObjects(jsonData) {
   allAnimals = jsonData.map(preapareObject);
 
-  // TODO: This might not be the function we want to call first
-
   buildList();
 }
 function buildList() {
@@ -84,6 +82,34 @@ function preapareObject(jsonObject) {
   return animal;
 }
 
+//Sorting
+function sortList(sortBy) {
+  let sortedList = allAnimals;
+
+  if (sortBy === "name") {
+    sortedList = sortedList.sort(sortByName);
+  } else if (sortBy === "type") {
+    sortedList = sortedList.sort(sortByType);
+  }
+
+  displayList(sortedList);
+}
+
+function sortByName(animalA, animalB) {
+  if (animalA.name < animalB.name) {
+    return -1;
+  } else {
+    return 1;
+  }
+}
+function sortByType(animalA, animalB) {
+  if (animalA.type < animalB.type) {
+    return -1;
+  } else {
+    return 1;
+  }
+}
+
 function displayList(animals) {
   // clear the list
   document.querySelector("#list tbody").innerHTML = "";
@@ -102,25 +128,24 @@ function displayAnimal(animal) {
   clone.querySelector("[data-field=type]").textContent = animal.type;
   clone.querySelector("[data-field=age]").textContent = animal.age;
 
+  // TODO: Add event listeners for star
+
   // Show star ⭐ or ☆
-  if (Animal.star) {
+  if (animal.star) {
     clone.querySelector("[data-field=star]").textContent = "⭐";
   } else {
     // clone.querySelector("[data-field=star]").textContent = "☆";
-    clone.querySelector("[data-field=star]").textContent = "⭐";
-    clone.querySelector("td[data-field=star]").style.filter = "grayscale(100%)";
+    clone.querySelector("[data-field=star]").textContent = "☆";
   }
 
-  // TODO: Add event listeners for star and winner
+  clone.querySelector("[data-field=star]").addEventListener("click", clickStar);
 
-  clone.querySelector("[data-field=star]").addEventListener("click", starToggle);
-
-  function starToggle() {
+  function clickStar() {
     // console.log("starToggle");
-    if (Animal.star === true) {
-      Animal.star = false;
+    if (animal.star === true) {
+      animal.star = false;
     } else {
-      Animal.star = true;
+      animal.star = true;
     }
     // console.log(animal);
     displayList(allAnimals);
